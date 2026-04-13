@@ -1,0 +1,22 @@
+# ML Service Requirements
+# Python packages for machine learning and API
+
+Flask==3.0.0
+Gunicorn==21.2.0
+python-dotenv==1.0.0
+numpy==1.24.3
+pandas==2.0.3
+scikit-learn==1.3.0
+scipy==1.11.2
+joblib==1.3.1
+geopy==2.3.0
+requests==2.31.0
+
+# Optional: For advanced ML capabilities
+# tensorflow==2.13.0
+# PyTorch==2.0.1
+# xgboost==2.0.0
+
+# Monitoring and logging
+flask-cors==4.0.0
+python-json-logger==2.0.7

@@ -1,0 +1,23 @@
+{
+  "name": "smartwaste",
+  "version": "2.0.0",
+  "description": "SmartWaste GIFT City — Cloud-based intelligent waste management system",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": ["smartwaste", "iot", "waste-management", "express", "leaflet"],
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "pg": "^8.13.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

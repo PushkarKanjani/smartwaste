@@ -1,0 +1,28 @@
+node_modules/
+.env
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+.venv/
+
+# App Data
+*.sqlite3
+
+# Ignore sensitive dev files
+data/users.json
+test-env
+
+# Ignore SSH/API keys
+keys/
+*.pem
+*.key
+.env

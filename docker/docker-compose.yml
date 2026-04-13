@@ -1,0 +1,117 @@
+version: '3.8'
+
+services:
+  # Frontend Container (Nginx)
+  frontend:
+    container_name: smartwaste-frontend
+    build:
+      context: ..
+      dockerfile: ./docker/smartwaste/frontend/Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - backend
+    networks:
+      - smartwaste-network
+    environment:
+      - NODE_ENV=development
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Backend API Container (Node.js/Express)
+  backend:
+    container_name: smartwaste-backend
+    build:
+      context: ..
+      dockerfile: ./docker/smartwaste/backend/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - smartwaste-network
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME:-smartwaste}
+      - DB_USER=${DB_USER:-smartwaste_user}
+      - DB_PASSWORD=${DB_PASSWORD:-smartwaste_password}
+      - ML_SERVICE_URL=http://ml_service:5000
+      - LOG_LEVEL=debug
+    volumes:
+      - ../backend:/app/backend
+      - ../data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Database Container (PostgreSQL)
+  postgres:
+    container_name: smartwaste-db
+    build:
+      context: ..
+      dockerfile: ./docker/smartwaste/postgres/Dockerfile
+    ports:
+      - "5432:5432"
+    networks:
+      - smartwaste-network
+    environment:
+      - POSTGRES_DB=${DB_NAME:-smartwaste}
+      - POSTGRES_USER=${DB_USER:-smartwaste_user}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-smartwaste_password}
+    volumes:
+      - smartwaste_db_data:/var/lib/postgresql/data
+      - ../database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ../database/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-smartwaste_user} -d ${DB_NAME:-smartwaste}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ML Service Container (Python/Flask)
+  ml_service:
+    container_name: smartwaste-ml
+    build:
+      context: ..
+      dockerfile: ./docker/smartwaste/ml/Dockerfile
+    ports:
+      - "5000:5000"
+    networks:
+      - smartwaste-network
+    environment:
+      - FLASK_ENV=development
+      - FLASK_APP=app.py
+      - PORT=5000
+      - LOG_LEVEL=debug
+    volumes:
+      - ../ml_service:/app
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  smartwaste-network:
+    driver: bridge
+
+volumes:
+  smartwaste_db_data:
+    driver: local
