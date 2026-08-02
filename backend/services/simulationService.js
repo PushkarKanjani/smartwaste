@@ -1,6 +1,6 @@
 /**
  * backend/services/simulationService.js
- * Member 2 – IoT sensor simulation
+ * IoT sensor simulation
  * Generates random fill levels for all bins (mimics real IoT sensors).
  */
 const { calculatePriority } = require('./priorityService');

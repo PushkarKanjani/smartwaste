@@ -10,6 +10,8 @@
 require('dotenv').config();
 const express      = require('express');
 const cors         = require('cors');
+const helmet       = require('helmet');
+const rateLimit    = require('express-rate-limit');
 const path         = require('path');
 const authRoutes   = require('./routes/authRoutes');
 const binRoutes    = require('./routes/binRoutes');
@@ -18,10 +20,19 @@ const errorHandler = require('./middleware/errorHandler');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
+const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:3000,http://127.0.0.1:3000').split(',').map(s => s.trim());
 
 // ── Middleware ────────────────────────────────────────────────────────────
+app.set('trust proxy', 1);
+app.use(helmet());
 app.use(express.json());
-app.use(cors({ origin: '*', methods: ['GET','POST','OPTIONS'] }));
+app.use(rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false,
+}));
+app.use(cors({ origin: allowedOrigins, methods: ['GET','POST','OPTIONS'] }));
 
 // ── Serve frontend static files ───────────────────────────────────────────
 // CSS, JS, and pages are in ../frontend/

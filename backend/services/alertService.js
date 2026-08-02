@@ -1,6 +1,6 @@
 /**
  * backend/services/alertService.js
- * Member 4 – Overflow alert engine
+ * Core alert engine
  * Alert shape: { bin_id, location, zone, fill_pct, priority, alert }
  */
 

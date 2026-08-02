@@ -1,6 +1,6 @@
 # SmartWaste Cloud
 
-A comprehensive, cloud-based smart waste management application showcasing a microservices architecture. It utilizes Docker, Nginx, Node.js, Python (Flask), and PostgreSQL.
+A personal, cloud-based smart waste management application showcasing a microservices-style architecture. It uses Docker, Nginx, Node.js, Python (Flask), and PostgreSQL to demonstrate smart bin monitoring, priority scoring, route planning, and overflow alerts.
 
 ## Architecture
 
@@ -24,8 +24,19 @@ The entire architecture is containerized and ready to deploy locally using Docke
    ```
 4. Access the application:
    * **Web Interface**: [http://localhost](http://localhost)
-   * **Backend API**: `http://localhost/api`
-   * **ML Service**: `http://localhost/ml`
+   * **Backend API**: `http://localhost:3000/api/health`
+   * **ML Service**: `http://localhost:5000/health`
+
+## Fast Cloud Deployment (Render)
+
+This project is now set up for a simple one-service deployment on Render.
+
+1. Push the project to GitHub.
+2. Create a new Web Service on Render and connect the repository.
+3. Use the existing [render.yaml](render.yaml) configuration.
+4. Render will start the Node app, which serves the frontend and API.
+
+> Netlify is suitable for the frontend only. For this project, Render is the simpler full-stack option because it can host the Node app and its API together.
 
 ## Tech Stack
 * **Frontend**: HTML5, CSS3, Vanilla JS

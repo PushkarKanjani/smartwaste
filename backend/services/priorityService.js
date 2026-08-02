@@ -1,6 +1,6 @@
 /**
  * backend/services/priorityService.js
- * Member 4 – Priority formula
+ * Priority formula
  * Formula: priority = (fill_pct × 0.1) + urgency_noise(0–2)
  */
 

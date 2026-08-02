@@ -1,6 +1,6 @@
 /**
  * backend/services/predictionService.js
- * Member 4 – Overflow time prediction
+ * Overflow time prediction
  * Models fill rate per bin and estimates hours to overflow.
  */
 

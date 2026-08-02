@@ -1,6 +1,6 @@
 /**
  * backend/services/routeService.js
- * Member 4 – Route generation algorithm
+ * Route generation algorithm
  * Filters candidates by critical threshold (≥75%), orders by nearest-neighbour.
  */
 
